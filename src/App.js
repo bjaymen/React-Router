@@ -1,24 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import Filter from "./components/Filter";
+import MovieList from "./components/MovieList";
+import { movieData } from "./components/Data";
+import MovieTrailer from "./components/MovieTrailer";
+import { BrowserRouter,Route,Routes } from "react-router-dom";
+
+
 
 function App() {
+  const [movies, setMovies] = useState(movieData);
+  const [filterName, setFilterName] = useState("");
+  const [filterRating, setFilterRating] = useState(0);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <div className="header">
+          <Filter
+            setFilterName={setFilterName}
+            filterRating={filterRating}
+            setFilterRating={setFilterRating}
+          />
+        </div>
+        
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <MovieList
+                movies={movies}
+                setMovies={setMovies}
+                filterName={filterName}
+                filterRating={filterRating}
+              />
+            }
+          />
+          <Route path="/:title" element={<MovieTrailer movies={movies} />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
 
